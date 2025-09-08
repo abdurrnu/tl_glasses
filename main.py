@@ -34,7 +34,7 @@ if __name__ == "__main__":
     final_result, frame = webcam_ocr(language_dict[source_lang]["paddle"])
 
     if final_result is not None:
-        print("\nResult:")
+        print("\nOCR Result:")
         print(final_result)
 
         cv2.imshow("frame", frame)
@@ -44,7 +44,6 @@ if __name__ == "__main__":
         # will need to add a mechanism for choosing langauge later
         from_code = language_dict[source_lang]["argos"]
         to_code = language_dict[target_lang]["argos"]
-
         # argo installation
         argostranslate.package.update_package_index()
         available_packages = argostranslate.package.get_available_packages()
@@ -56,7 +55,7 @@ if __name__ == "__main__":
         argostranslate.package.install_from_path(package_to_install.download())
 
         # translation
-        print("Translating")
+        print("Translation:")
         translation = argostranslate.translate.translate(final_result, from_code, to_code)
         print(translation)
 

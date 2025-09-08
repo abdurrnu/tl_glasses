@@ -2,6 +2,7 @@ import cv2
 from paddleocr import PaddleOCR
 
 def webcam_ocr(source_lang):
+    input("Position camera, then press enter when ready")
     vidcap = cv2.VideoCapture(0)
     success, frame = vidcap.read()
 
