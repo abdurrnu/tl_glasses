@@ -1,5 +1,5 @@
 import cv2
-import pytesseract
+from paddleocr import PaddleOCR
 
 if __name__ == "__main__":
     vidcap = cv2.VideoCapture(0)
@@ -7,26 +7,21 @@ if __name__ == "__main__":
 
     if success:
         print("webcam worked")
-        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        processed_image = cv2.adaptiveThreshold(
-            gray_frame, 
-            255,
-            cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-            cv2.THRESH_BINARY,
-            11,
-            2
-        )
 
-        custom_config = r'--oem 3 --psm 6'
-        text = pytesseract.image_to_string(processed_image, config=custom_config)
-        
-        if text.strip():
-             print(text)
-        else:
-             print("ocr failed")
+        #only english
+        ocr = PaddleOCR(lang='en')
+        result = ocr.predict(frame)
+        recognized_texts = result[0]['rec_texts']
 
-        cv2.imwrite("processed_image.png", processed_image)
-        cv2.imshow("processed image", processed_image)
+        all_strings = []
+        for text in recognized_texts:
+            all_strings.append(text)
+
+        final_result = " ".join(all_strings)
+        print("\nResult:")
+        print(final_result)
+
+        cv2.imshow("frame", frame)
         cv2.waitKey(0)
     else:
         print("webcam failed.")
